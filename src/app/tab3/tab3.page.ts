@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-tab3',
@@ -7,6 +9,8 @@ import { Component } from '@angular/core';
 })
 export class Tab3Page {
 
-  constructor() {}
-
+  item$: Observable<any[]>;
+  constructor(firestore: AngularFirestore) {
+    this.item$ = firestore.collection('livros',  ref => ref.orderBy('nome')). valueChanges();
+  }
 }

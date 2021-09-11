@@ -7,5 +7,9 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  
+  <ul>
+    <li *ngFor="let livro of item$ | async">
+      {{ livro.nome }}
+    </li>
+  </ul>
 </ion-content>
