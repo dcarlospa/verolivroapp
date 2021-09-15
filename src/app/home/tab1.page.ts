@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
+import { Observable } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-tab1',
@@ -13,50 +15,41 @@ export class Tab1Page {
     slidesPerView: 2.3
   };
 
-  livrosLendo = [];
   /*
   {
     nome: string,
+    autor: string,
     totalPaginas: number,
     paginaAtual: number,
-    id: number,
+    estado: string,
+    dono: userId
   }
   www.servidordeimagensdogeorge.com.br/id
   */
+  livrosLendo$: Observable<any[]>;
+  livrosLidos$: Observable<any[]>;
+  livrosLerei$: Observable<any[]>;
 
-  constructor( public alertController: AlertController ) {
-    this.livrosLendo.push(
-      {
-        nome: 'Bíblia',
-        totalPaginas: 1400,
-        paginaAtual: 30,
-        id: 8,
-      }
-    );
-    this.livrosLendo.push(
-      {
-        nome: 'O Pequeno Príncipe',
-        totalPaginas: 198,
-        paginaAtual: 160,
-        id: 130,
-      }
-    );
-    this.livrosLendo.push(
-      {
-        nome: 'Pedagogia do Oprimido',
-        totalPaginas: 300,
-        paginaAtual: 120,
-        id: 21,
-      }
-    );
+  constructor(
+    public alertController: AlertController,
+    private authService: AuthService,
+    private navCtrl: NavController
+    ) {
+    if(this.authService.userId===''){
+      this.navCtrl.navigateRoot('tabs/perfil');
+    }
+  }
 
-
+  ionViewWillEnter(){
+    this.livrosLendo$ = this.authService.getLivros('lendo');
+    this.livrosLidos$ = this.authService.getLivros('lido');
+    this.livrosLerei$ = this.authService.getLivros('lerei');
   }
 
   getImageById(id){
     return 'https://picsum.photos/id/'+id+'/200/300';
   }
-
+/*
   async atualizaLivro(livro){
     console.log(livro);
 
@@ -105,7 +98,7 @@ export class Tab1Page {
 
     await alert.present();
   }
-
+*/
   adicionarLivro(){
     console.log('Adicionando Livro');
     alert('Adicionando Livro');

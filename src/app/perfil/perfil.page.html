@@ -7,5 +7,13 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <h3>É perfil mesmo?</h3>
+  <ion-item>
+    <ion-label position="floating">E-mail</ion-label>
+    <ion-input [(ngModel)]="email" ></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Senha</ion-label>
+    <ion-input [(ngModel)]="senha" type="password"></ion-input>
+  </ion-item>
+  <ion-button expand="block" (click)="efetuarLogin()">Entrar</ion-button>
 </ion-content>
