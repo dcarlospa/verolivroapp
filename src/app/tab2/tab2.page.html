@@ -7,53 +7,50 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-searchbar placeholder="Buscar" color="danger" animated showCancelButton="focus"></ion-searchbar>
+  <ion-searchbar placeholder="Pesquisar resumos" color="default" animated showCancelButton="focus"></ion-searchbar>
   
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="addAluno()">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-  <ion-list>
-    <ion-item>
-      <ion-icon (click)="acao('american-football-outline')" size="large" name="american-football-outline"></ion-icon>
-      <ion-label>Pokémon Yellow</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-icon (click)="acao('baseball-outline')" size="large" name="baseball-outline"></ion-icon>
-      <ion-label>Mega Man X</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-icon (click)="acao('football-outline')" size="large" name="football-outline"></ion-icon>
-      <ion-label>The Legend of Zelda</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-icon (click)="acao('tennisball-outline')" size="large" name="tennisball-outline"></ion-icon>
-      <ion-label>Pac-Man</ion-label>
-    </ion-item>
-  
-    <ion-item-sliding>
-      <ion-item>
-        <ion-label>Arrastar pro lado</ion-label>
-      </ion-item>
-      <ion-item-options side="end">
-        <ion-item-option color="danger" (click)="acao('Remover')">Remover</ion-item-option>
-        <ion-item-option color="warning" (click)="acao('Editar')">Editar</ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list>
 
-  <ion-list>
-    <ion-item-sliding *ngFor="let aluno of alunos">
-      <ion-item>
-        <ion-label>{{aluno}}</ion-label>
-      </ion-item>
-      <ion-item-options side="end">
-        <ion-item-option color="danger" (click)="removeAluno(aluno)">Remover</ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list>
-  <ion-button (click)="carregar()">Salvar</ion-button>
+  <h3 class="ion-text-center">Top Resumos</h3>
+  <ion-slides [options]="slideOpts">
+    <ion-slide *ngFor="let resumo of resumosTop$ | async">
+      <ion-card>
+        <img [src]="getImageById(resumo.id)" />
+        <ion-card-content>
+          <h3><b>{{resumo.nome}}</b></h3>
+          <ion-button (click)="lerResumo(resumo)" expand="full" shape="round" color="danger">Ler</ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+  </ion-slides>
+
+  <h3 class="ion-text-center">Recentes</h3>
+  <ion-slides [options]="slideOpts">
+    <ion-slide *ngFor="let resumo of resumosRecentes$ | async">
+      <ion-card>
+        <img [src]="getImageById(resumo.id)" />
+        <ion-card-content>
+          <h3><b>{{resumo.nome}}</b></h3>
+          <ion-button (click)="lerResumo(resumo)" expand="full" shape="round" color="danger">Ler</ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+  </ion-slides>
+
+  <h3 class="ion-text-center">Seus resumos</h3>
+  <ion-slides [options]="slideOpts">
+    <ion-slide *ngFor="let resumo of meusResumos$ | async">
+      <ion-card>
+        <img [src]="getImageById(resumo.livro.id)" />
+        <ion-card-content>
+          <h3><b>{{resumo.livro.nome}}</b></h3>
+          <p>{{resumo.quantidadeVisualizacoes}} visualizações</p>
+          <ion-button (click)="abrirMeuResumo(resumo)" expand="full" shape="round" color="danger">Abrir</ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+  </ion-slides>
+
+  <ion-button expand="block" (click)="novoResumo()">Novo Resumo</ion-button>
 
 
 </ion-content>

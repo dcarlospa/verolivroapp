@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { LoadingController, PopoverController } from '@ionic/angular';
-
+import { Observable } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
@@ -8,40 +8,31 @@ import { LoadingController, PopoverController } from '@ionic/angular';
 })
 export class Tab2Page {
 
-  alunos = ['George', 'Laércio', 'Lucas', 'David'];
+  resumosTop$: Observable<any[]>;
+  resumosRecentes$: Observable<any[]>;
+  meusResumos$: Observable<any[]>;
+
   constructor(
-    public popoverController: PopoverController,
-    public loadingController: LoadingController
+    private authService: AuthService,
     ) {
 
   }
 
-  acao(nomeBotao){
-    console.log(nomeBotao);
+
+
+
+  ionViewWillEnter(){
+    this.resumosTop$ = this.authService.getResumos('tops');
+    this.resumosRecentes$ = this.authService.getResumos('recentes');
+    this.meusResumos$ = this.authService.getResumos('meus');
   }
 
-  removeAluno(aluno){
-    this.alunos.splice(this.alunos.indexOf(aluno), 1);
+  abrirMeuResumo(resumo) {
+    console.log('Abrindo o resumo ', resumo);
   }
 
-  addAluno(){
-    this.alunos.push('George '+this.alunos.length);
-
-  }
-
-  async carregar() {
-    const loading = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'Aguarde...',
-      duration: 5000
-    });
-    loading.present();
-    //Conectar na API e salvar os dados, esperando a resposta da api
-    loading.dismiss();
-
-    const { role, data } = await loading.onDidDismiss();
-    console.log('Loading dismissed!');
-
+  getImageById(id){
+    return 'https://picsum.photos/id/'+id+'/200/200';
   }
 
 }

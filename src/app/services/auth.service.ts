@@ -47,4 +47,17 @@ export class AuthService {
       .orderBy('nome')
     ).valueChanges();
   }
+
+  getResumos(tipo: string){ //estado=meus, tops, recentes
+    if(tipo==='meus'){
+      return this.firestore.collection('resumos',
+      ref => ref
+        .where('autor','==', this.userId)
+        .orderBy('dataCriacao', 'desc')
+      ).valueChanges();
+    }
+    else {
+
+    }
+  }
 }
