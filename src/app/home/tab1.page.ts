@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { BooksServiceService } from '../services/books-service.service';
 
 @Component({
   selector: 'app-tab1',
@@ -33,7 +34,8 @@ export class Tab1Page {
   constructor(
     public alertController: AlertController,
     private authService: AuthService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private booksService: BooksServiceService
     ) {
     if(this.authService.userId===''){
       this.navCtrl.navigateRoot('tabs/perfil');
@@ -41,15 +43,15 @@ export class Tab1Page {
   }
 
   ionViewWillEnter(){
-    this.livrosLendo$ = this.authService.getLivros('lendo');
-    this.livrosLidos$ = this.authService.getLivros('lido');
-    this.livrosLerei$ = this.authService.getLivros('lerei');
+    this.livrosLendo$ = this.booksService.getLivros('lendo');
+    this.livrosLidos$ = this.booksService.getLivros('lido');
+    this.livrosLerei$ = this.booksService.getLivros('lerei');
   }
 
   getImageById(id){
     return 'https://picsum.photos/id/'+id+'/200/300';
   }
-/*
+
   async atualizaLivro(livro){
     console.log(livro);
 
@@ -76,21 +78,23 @@ export class Tab1Page {
         }, {
           text: 'Terminei',
           handler: () => {
-            this.livrosLendo.splice(this.livrosLendo.indexOf(livro), 1);
+            livro.estado = 'lido';
+            livro.paginaAtual = livro.totalPaginas;
+            livro.nota=0;
+            this.booksService.updateLivro(livro);
           }
         }, {
           text: 'Salvar',
           handler: data => {
             console.log(data);
-            console.log(this.livrosLendo);
-            this.livrosLendo.forEach(l => {
-              if(l.id===livro.id){
-                if(Number(data.paginaAtualInput) > livro.totalPaginas)
-                  {l.paginaAtual = l.totalPaginas;}
-                else
-                  {l.paginaAtual = Number(data.paginaAtualInput);}
-              }
-            });
+            livro.paginaAtual = data.paginaAtualInput;
+            if(data.paginaAtualInput > livro.totalPaginas){
+              livro.paginaAtual = livro.totalPaginas;
+            }
+            else if(data.paginaAtualInput < 0) {
+              livro.paginaAtual = 0;
+            }
+            this.booksService.updateLivro(livro);
           }
         }
       ]
@@ -98,9 +102,87 @@ export class Tab1Page {
 
     await alert.present();
   }
-*/
+
+  comecarLivro(livro){
+    livro.estado='lendo';
+    livro.paginaAtual=0;
+    this.booksService.updateLivro(livro);
+  }
+
   adicionarLivro(){
     console.log('Adicionando Livro');
     alert('Adicionando Livro');
+  }
+
+  async avaliarLivro(livro){
+      const alert = await this.alertController.create({
+        header: 'Radio',
+        inputs: [
+          {
+            name: 'radio1',
+            type: 'radio',
+            label: '1',
+            value: 1,
+            handler: () => {
+              console.log('Nota 1');
+            }
+          },
+          {
+            name: 'radio2',
+            type: 'radio',
+            label: '2',
+            value: 2,
+            handler: () => {
+              console.log('Radio 2 selected');
+            }
+          },
+          {
+            name: 'radio3',
+            type: 'radio',
+            label: '3',
+            value: 3,
+            handler: () => {
+              console.log('Radio 3 selected');
+            }
+          },
+          {
+            name: 'radio4',
+            type: 'radio',
+            label: '4',
+            value: 4,
+            handler: () => {
+              console.log('Radio 4 selected');
+            }
+          },
+          {
+            name: 'radio5',
+            type: 'radio',
+            label: '5',
+            value: 5,
+            handler: () => {
+              console.log('Radio 5 selected');
+            }
+          },
+        ],
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              console.log('Confirm Cancel');
+            }
+          }, {
+            text: 'Ok',
+            handler: (data) => {
+              console.log('Confirm Ok', data);
+              livro.nota = data;
+              this.booksService.updateLivro(livro);
+            }
+          }
+        ]
+      });
+
+      await alert.present();
   }
 }

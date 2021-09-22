@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthService } from '../services/auth.service';
+import { BooksServiceService } from '../services/books-service.service';
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
@@ -13,18 +13,18 @@ export class Tab2Page {
   meusResumos$: Observable<any[]>;
 
   constructor(
-    private authService: AuthService,
+    private booksService: BooksServiceService,
     ) {
-
+      this.booksService.loadUserId();
   }
 
 
 
 
   ionViewWillEnter(){
-    this.resumosTop$ = this.authService.getResumos('tops');
-    this.resumosRecentes$ = this.authService.getResumos('recentes');
-    this.meusResumos$ = this.authService.getResumos('meus');
+    this.resumosTop$ = this.booksService.getResumos('tops');
+    this.resumosRecentes$ = this.booksService.getResumos('recentes');
+    this.meusResumos$ = this.booksService.getResumos('meus');
   }
 
   abrirMeuResumo(resumo) {

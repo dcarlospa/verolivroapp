@@ -39,25 +39,4 @@ export class AuthService {
 
   }
 
-  getLivros(estado: string){ //estado=lido, lendo, lerei
-    return this.firestore.collection('livros',
-    ref => ref
-      .where('dono','==', this.userId)
-      .where('estado','==',estado)
-      .orderBy('nome')
-    ).valueChanges();
-  }
-
-  getResumos(tipo: string){ //estado=meus, tops, recentes
-    if(tipo==='meus'){
-      return this.firestore.collection('resumos',
-      ref => ref
-        .where('autor','==', this.userId)
-        .orderBy('dataCriacao', 'desc')
-      ).valueChanges();
-    }
-    else {
-
-    }
-  }
 }

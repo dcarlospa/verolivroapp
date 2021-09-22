@@ -35,8 +35,10 @@
         <img [src]="getImageById(livro.id)" />
         <ion-card-content>
           <h3><b>{{livro.nome}}</b></h3>
-          <p>página {{livro.paginaAtual}} de {{livro.totalPaginas}}</p>
-          <ion-button (click)="atualizaLivro(livro)" expand="full" shape="round" color="danger">Atualizar</ion-button>
+          <div *ngIf="livro.nota > 0" (click)="avaliarLivro(livro)">{{livro.nota}}<ion-icon name="star"></ion-icon></div>
+          <ion-button *ngIf="livro.nota === 0" (click)="avaliarLivro(livro)" expand="full" shape="round" color="danger">
+            Avaliar
+          </ion-button>
         </ion-card-content>
       </ion-card>
     </ion-slide>
@@ -57,7 +59,7 @@
         <img [src]="getImageById(livro.id)" />
         <ion-card-content>
           <h3><b>{{livro.nome}}</b></h3>
-          <ion-button (click)="atualizaLivro(livro)" expand="full" shape="round" color="danger">Atualizar</ion-button>
+          <ion-button (click)="comecarLivro(livro)" expand="full" shape="round" color="danger">Comecei</ion-button>
         </ion-card-content>
       </ion-card>
     </ion-slide>
