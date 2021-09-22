@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Resumo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <img [src]="getImageUrl()" />
+  <h2>{{livro}}</h2>
+  <h3>{{autor}}</h3>
+  <p>{{resumo}}</p>
+
+  <ion-button (click)="dismiss()">Ok</ion-button>
+
+</ion-content>

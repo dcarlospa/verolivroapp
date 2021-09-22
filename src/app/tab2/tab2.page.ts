@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
+import { ModalresumoPage } from '../modalresumo/modalresumo.page';
 import { BooksServiceService } from '../services/books-service.service';
 @Component({
   selector: 'app-tab2',
@@ -14,6 +16,7 @@ export class Tab2Page {
 
   constructor(
     private booksService: BooksServiceService,
+    public modalController: ModalController
     ) {
       this.booksService.loadUserId();
   }
@@ -27,8 +30,23 @@ export class Tab2Page {
     this.meusResumos$ = this.booksService.getResumos('meus');
   }
 
-  abrirMeuResumo(resumo) {
+  async abrirMeuResumo(resumo) {
     console.log('Abrindo o resumo ', resumo);
+
+    const modal = await this.modalController.create({
+      component: ModalresumoPage,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        livro: resumo.livro.nome,
+        resumo: resumo.texto,
+        id: resumo.livro.id,
+        idAutor: resumo.autor
+
+      }
+    });
+    return await modal.present();
+
+
   }
 
   getImageById(id){

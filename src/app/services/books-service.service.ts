@@ -49,4 +49,8 @@ export class BooksServiceService {
   updateLivro(livro){
     this.firestore.doc('livros/'+livro.docId).update(livro);
   }
+
+  getNomeAutorById(id){
+    return this.firestore.doc<any>('usuarios/'+id).valueChanges();
+  }
 }
