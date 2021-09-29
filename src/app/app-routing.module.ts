@@ -5,10 +5,23 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
-  },  {
+  },
+  {
     path: 'modalresumo',
     loadChildren: () => import('./modalresumo/modalresumo.module').then( m => m.ModalresumoPageModule)
   },
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },  {
+    path: 'cadastro',
+    loadChildren: () => import('./cadastro/cadastro.module').then( m => m.CadastroPageModule)
+  },
+  {
+    path: 'adicionar-livro',
+    loadChildren: () => import('./adicionar-livro/adicionar-livro.module').then( m => m.AdicionarLivroPageModule)
+  },
+
 
 ];
 @NgModule({

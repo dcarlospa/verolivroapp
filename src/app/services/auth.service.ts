@@ -8,7 +8,6 @@ import { AngularFirestore } from '@angular/fire/firestore';
 export class AuthService {
 
   public userId = '';
-  estaLogado = false;
 
   constructor(
     private fireAuth: AngularFireAuth,
@@ -21,22 +20,31 @@ export class AuthService {
 
   }
 
+  async cadastro(nome, email, senha){
+    const result = await this.fireAuth.createUserWithEmailAndPassword(email, senha);
+    if(result.user){
+      this.firestore.doc('usuarios/'+result.user.uid).set({nome, email});
+      this.userId = result.user.uid;
+      return true;
+    }
+    return false;
+  }
+
   async login(email, senha){
     const result = await this.fireAuth.signInWithEmailAndPassword(email, senha);
     if(result.user) {
       console.log(result.user.uid);
       this.userId = result.user.uid;
-      this.estaLogado = true;
       return true;
     }
     else {
-      this.estaLogado = false;
       return false;
     }
   }
 
-  logout(){
-
+  async logout(){
+    await this.fireAuth.signOut();
+    this.userId='';
   }
 
 }

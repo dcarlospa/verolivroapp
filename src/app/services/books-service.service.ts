@@ -18,7 +18,9 @@ export class BooksServiceService {
 
   loadUserId(){
     this.fireAuth.currentUser.then( user => {
-      this.userId = user.uid;
+      if(user){
+        this.userId = user.uid;
+      }
       console.log(user);
     });
   }
@@ -52,5 +54,9 @@ export class BooksServiceService {
 
   getNomeAutorById(id){
     return this.firestore.doc<any>('usuarios/'+id).valueChanges();
+  }
+
+  adicionarLivro(livro){
+    this.firestore.collection('livros').add(livro);
   }
 }

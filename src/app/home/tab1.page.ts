@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, NavController, ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
+import { AdicionarLivroPage } from '../adicionar-livro/adicionar-livro.page';
 import { AuthService } from '../services/auth.service';
 import { BooksServiceService } from '../services/books-service.service';
 
@@ -35,14 +36,16 @@ export class Tab1Page {
     public alertController: AlertController,
     private authService: AuthService,
     private navCtrl: NavController,
-    private booksService: BooksServiceService
+    private booksService: BooksServiceService,
+    private modalController: ModalController
     ) {
     if(this.authService.userId===''){
-      this.navCtrl.navigateRoot('tabs/perfil');
+      this.navCtrl.navigateRoot('login');
     }
   }
 
   ionViewWillEnter(){
+    this.booksService.loadUserId();
     this.livrosLendo$ = this.booksService.getLivros('lendo');
     this.livrosLidos$ = this.booksService.getLivros('lido');
     this.livrosLerei$ = this.booksService.getLivros('lerei');
@@ -109,9 +112,17 @@ export class Tab1Page {
     this.booksService.updateLivro(livro);
   }
 
-  adicionarLivro(){
+  async adicionarLivro(estado){
     console.log('Adicionando Livro');
-    alert('Adicionando Livro');
+
+    const modal = await this.modalController.create({
+      component: AdicionarLivroPage,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        estado,
+      }
+    });
+    return await modal.present();
   }
 
   async avaliarLivro(livro){
@@ -185,4 +196,5 @@ export class Tab1Page {
 
       await alert.present();
   }
+
 }

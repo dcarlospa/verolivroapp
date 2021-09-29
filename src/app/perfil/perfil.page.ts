@@ -16,12 +16,10 @@ export class PerfilPage {
     private navCtrl: NavController
     ) {}
 
-  async efetuarLogin(){
-    console.log('Efetuando o Login...');
-    const result = await this.authService.login(this.email, this.senha);
-    if(result) {
-      this.navCtrl.navigateRoot('tabs/tab1');
-    }
+  async sair(){
+    console.log('Saind...');
+    const result = await this.authService.logout();
+    this.navCtrl.navigateRoot('login');
 
   }
 
