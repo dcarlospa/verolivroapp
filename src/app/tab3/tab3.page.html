@@ -7,9 +7,14 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ul>
-    <li *ngFor="let livro of item$ | async">
-      {{ livro.nome }} - {{livro.autor}}
-    </li>
-  </ul>
+<ion-button *ngIf="indiceResultado < 0" (click)="getSugestao(user)" color="danger" expand="block">Sugestão do dia</ion-button>
+<ion-card *ngIf="indiceResultado >=0 ">
+  <img [src]="respostas[indiceResultado].pi" />
+        <ion-card-content>
+          <h3><b>{{respostas[indiceResultado].p}}</b></h3>
+          
+          <ion-button *ngIf="indiceResultado<(respostas.length-1)" (click)="proximo()" expand="block">Próximo</ion-button>
+        </ion-card-content>
+</ion-card>
+
 </ion-content>
