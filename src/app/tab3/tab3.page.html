@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-<ion-button *ngIf="indiceResultado < 0" (click)="getSugestao(user)" color="danger" expand="block">Sugestão do dia</ion-button>
+<ion-button *ngIf="indiceResultado < 0" (click)="getSugestao()" color="danger" expand="block">Sugestão do dia</ion-button>
 <ion-card *ngIf="indiceResultado >=0 ">
   <img [src]="respostas[indiceResultado].pi" />
         <ion-card-content>

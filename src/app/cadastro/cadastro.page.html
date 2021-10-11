@@ -7,16 +7,81 @@
 <ion-content>
   <ion-item>
     <ion-label position="floating">Nome</ion-label>
-    <ion-input [(ngModel)]="nome" ></ion-input>
+    <ion-input [(ngModel)]="user.nome" ></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="floating">E-mail</ion-label>
-    <ion-input [(ngModel)]="email" ></ion-input>
+    <ion-input [(ngModel)]="user.email" ></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Senha</ion-label>
-    <ion-input [(ngModel)]="senha" type="password"></ion-input>
+    <ion-input [(ngModel)]="user.senha" type="password"></ion-input>
   </ion-item>
-  <ion-button expand="block" (click)="efetuarLogin()">Entrar</ion-button>
+  <ion-item>
+    <ion-label position="floating">Idade</ion-label>
+    <ion-input [(ngModel)]="user.idade" type="number"></ion-input>
+  </ion-item>
+
+
+  <ion-list>
+    <ion-radio-group [(ngModel)]="user.escolaridade">
+      <ion-list-header>
+        <ion-label>Escolaridade</ion-label>
+      </ion-list-header>
+  
+      <ion-item *ngFor="let escolaridade of escolaridades; let i = index;">
+        <ion-label>{{escolaridade}}</ion-label>
+        <ion-radio slot="end" value="{{i}}"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+
+  <ion-list>
+    <ion-radio-group [(ngModel)]="user.genero">
+      <ion-list-header>
+        <ion-label>Gênero</ion-label>
+      </ion-list-header>
+  
+      <ion-item *ngFor="let genero of generos; let i = index;">
+        <ion-label>{{genero}}</ion-label>
+        <ion-radio slot="end" value={{i}}></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Gosto Musical</ion-label>
+    </ion-list-header>
+
+    <ion-item *ngFor="let musica of musicas; let i = index;">
+      <ion-label>{{musica}}</ion-label>
+      <ion-checkbox slot="end" [(ngModel)]="user.s[i]"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Filmes preferidos</ion-label>
+    </ion-list-header>
+
+    <ion-item *ngFor="let filme of cinemas; let i = index;">
+      <ion-label>{{filme}}</ion-label>
+      <ion-checkbox slot="end" [(ngModel)]="user.m[i]"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Livros Preferidos</ion-label>
+    </ion-list-header>
+
+    <ion-item *ngFor="let livro of literarios; let i = index;">
+      <ion-label>{{livro}}</ion-label>
+      <ion-checkbox slot="end" [(ngModel)]="user.b[i]"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" (click)="cadastrar()">Salvar</ion-button>
   <ion-button expand="block" color="danger" (click)="voltar()">Voltar</ion-button>
 </ion-content>

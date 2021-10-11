@@ -13,15 +13,7 @@ export class Tab3Page {
   indiceResultado = -1;
   respostas = [];
 
-  user = {
-    idade: 18,
-    escolaridade: 0,
-    genero:2,
-    s:[true,true,true,true,true,false,true,false,true,false,true,true,true,false,false,true,false,true,true,false,true],
-    m:[false,false,false,false,true,true,false,true,false,true,true,false,true,false,true,true,true,true,false,true,false,true,true],
-    b:[true,true,true,false,true,true,false,false,false,true,true,
-      true,true,true,true,false,true,true,true,false,false,true,true,true,true,true,false,false,false,false,false,false,false,true],
-  };
+  user: any;
 
   constructor(firestore: AngularFirestore) {
   }
@@ -33,7 +25,8 @@ export class Tab3Page {
     this.indiceResultado++;
   }
 
-  async getSugestao(person){
+  async getSugestao(){
+    const person = this.user;
     console.log('getSugestao Ok');
 
     const resposta = this.iniciaRespostas(620);
